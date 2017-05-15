@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.1.0/topojson.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.7.0/d3-legend.min.js"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+	<script src="http://datamaps.github.io/scripts/datamaps.world.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+	<script src = "{{ url_for('static', filename='topojson.v1.min.js')}}"></script>
+	<script src = "{{ url_for('static', filename='queue.v1.min.js')}}"></script>
+	<script src = "{{ url_for('static', filename='dashboard.js')}}"></script>
+	<script src = "{{ url_for('static', filename='parallelCoordinates.js')}}"></script>
+	<script src = "{{ url_for('static', filename='histPie.js')}}"></script>
+	<script src = "{{ url_for('static', filename='radar-chart.js')}}"></script>
+	<script src = "{{ url_for('static', filename='trendAnalysis.js')}}"></script>
+	<script src = "{{ url_for('static', filename='mainLayout.js')}}"></script>
+	<script src = "{{ url_for('static', filename='worldmap.js')}}"></script>
+	<script src = "{{ url_for('static', filename='histPieCountry.js')}}"></script>
+	<script src = "{{ url_for('static', filename='stackBarChart.js')}}"></script>
+
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/normalize.css') }}">
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/radar-chart.css') }}">
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/skeleton.css') }}">
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/histo.css') }}">
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/dashboard.css') }}">
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/map.css') }}">
+
+	<title>World University Ranking Data</title>
+	<div class="rowHead flexbox-container">
+		<div class = "colHead1" id="heading"><h2>Universities across the world</h2></div>
+		<div class = "colHead2">
+			<div style="left-padding:10px ">
+			<!--<center>-->
+				<span>Select year</span>
+				<select id="options_year" name="options_year" onchange="updateUIYear()">
+					<option value="">Year</option>
+					<option value="2016">2016</option>
+					<option value="2015">2015</option>
+					<option value="2014">2014</option>
+					<option value="2013">2013</option>
+					<option value="2012">2012</option>
+					<option value="2011">2011</option>
+				</select>
+			<!--</center>-->
+		</div>
+		</div>
+		<button class="button button2" style = "visibility: hidden;" id = "updateLine" onclick="updateLinePlots()" >Update Line Plots</button>
+		<button class="button button2 " id = "backHome" onclick="backToHome()" style="float:right" ><center>Back to Home</center></button>
+
+		<!--<a class="myButton colHead3" id = "updateLine" onclick="updateLinePlots()" disabled="true"><center>Update Line Plots</center></a>-->
+		<!--<a class="myButton colHead4" id = "backHome" onclick="backToHome()" style="float:right"><center>Back to Home</center></a>-->
+		<!--<button class="colHead4" style="background-color=#555555; text-align: center;" id = "backHome" onclick="backToHome()">Back to Home</button>-->
+	</div>
+
+</head>
+
+<body >
+
+<!--<div class="tab">-->
+  <!--<button class="tablinks" onclick="openLayout(event, 'dashboard')">Dashboard</button>-->
+  <!--<button class="tablinks" onclick="openLayout(event, 'trendAnalysis')">Trend Analysis</button>-->
+<!--</div>-->
+	<div class="row">
+		<div class="col1" style="margin-right:5px">
+
+			<center><h5 id="mapHeading"><b>Countries with Top 200 Universitites in 2016</b></h5></center>
+			<div id="container" style="height:50%"></div>
+			<div style = "height:50%; border: solid green 1px;">
+
+				<center><font size="+2" id="histHeading"><b>Distribution of Universities in 2016</b></font></center>
+				<table>
+				  <!--<tr>-->
+					<!--<th scope="col"></th>-->
+					<!--<th scope="col" colspan="2"></th>-->
+				  <!--</tr>-->
+				  <tr>
+					<td cellspacing="0" cellpadding="1">
+						<form id="radioForm">
+							<input type="radio" name="myRadio" value="2" onchange="updateHistDiv()" checked="checked"/> Criteria wise <br />
+							<input id = "countryBar" type="radio" name="myRadio" value="1" onchange="updateHistDiv()" /><span id = "countryBarText"> Country wise</span>
+						</form>
+					</td>
+					<td>Select the criteria</td>
+					<td>
+						<select id="options_attr" name="options_attr" onchange="updateUIAttribute()">
+							<option value="">Attribute</option>
+							<option value="">Number Of Students</option>
+							<option value="international">International Score</option>
+							<option value="research">Research Score</option>
+							<option value="income">Industry Income</option>
+							<option value="student_staff_ratio">Student-Staff Ratio</option>
+						</select>
+					</td>
+				  </tr>
+				</table>
+				<div id="histogram"></div>
+			</div>
+		</div>
+
+		<div style = "height = 100%;" class="col2">
+			<div style=" border: solid green 1px; margin-bottom: 5px; margin-top: 5px">
+				<center><font size="+2" id = "radarHeading"><b>Comparision of each criteria across countries in 2016</b></font></center>
+				<div style="float:left, height: 50%; " class="radarChart" id = "radarChartID"></div>
+			</div>
+
+			<div style=" border: solid green 1px;">
+				<center><font size="+2" id="stackBarTitle"><b>Evolution of each criteria used in ranking</b></font></center>
+				<div style="height:50%;" id = "stackBar"></div>
+			</div>
+		</div>
+
+</div>
+
+<div id="dashboard" class="tabcontent">
+
+	<!--<div id = "error"></div>-->
+	<!--<div class="row">-->
+		<!--<div class="col1" id = "clickableBubble"></div>-->
+		<!--&lt;!&ndash;<div class="col1" id = "bubble"></div>&ndash;&gt;-->
+		<!--<div class="col2" id="histAndPie">-->
+			<!--<div class = "row">-->
+				<!--<form id="radioForm" class="col1">-->
+					<!--<input type="radio" name="myRadio" value="1" onchange="updateHistDiv()"  checked="checked"/> Attribute across country <br />-->
+					<!--<input type="radio" name="myRadio" value="2" onchange="updateHistDiv()"/> University Count across an attribute <br />-->
+				<!--</form>-->
+				<!--<div id="dropdown" class="col2" >-->
+					<!--<h6> <center>Select the Year and Select the attribute</center></h6>-->
+					<!--<div class="menu" style="display:block;">-->
+						<!--<select id="options_year" name="options_year" onchange="updateUI()">-->
+							<!--<option value="">Year</option>-->
+							<!--<option value="2016">2016</option>-->
+							<!--<option value="2015">2015</option>-->
+							<!--<option value="2014">2014</option>-->
+							<!--<option value="2013">2013</option>-->
+							<!--<option value="2012">2012</option>-->
+							<!--<option value="2011">2011</option>-->
+						<!--</select>-->
+						<!--<select id="options_attr" name="options_attr" onchange="updateUI()">-->
+							<!--<option value="">Attribute</option>-->
+							<!--<option value="">Number Of Students</option>-->
+							<!--<option value="international">International Score</option>-->
+							<!--<option value="research">Research Score</option>-->
+							<!--<option value="income">Industry Income</option>-->
+							<!--<option value="student_staff_ratio">Student-Staff Ratio</option>-->
+						<!--</select>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div id="histogram"></div>-->
+		<!--</div>-->
+		<!--&lt;!&ndash;<div class="col2" id = "histogram"></div>&ndash;&gt;-->
+	<!--</div>-->
+	<!--<div class="row">-->
+		<!--<div class="col1" id="stackBar"></div>-->
+		<!--<div class="col2" id="radar"></div>-->
+	<!--</div>-->
+	<!--&lt;!&ndash;<div id = "bar"></div>&ndash;&gt;-->
+	<!--&lt;!&ndash;<div id = "map" ></div>&ndash;&gt;-->
+	<!--<div class="row">-->
+		<!--<div class="col1" id = "bar"></div>-->
+		<!--&lt;!&ndash;<div class="col1" id = "map"></div>&ndash;&gt;-->
+		<!--<div class="col2" id = "bubble"></div>-->
+		<!--&lt;!&ndash;<div class="col2" id = "map" ></div>&ndash;&gt;-->
+	<!--</div>-->
+
+
+<!--</div>-->
+
+<!--<div id="trendAnalysis" class="tabcontent">-->
+	<!--<div class = "col">-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="Harvard University" />-->
+				<!--Harvard University-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="California Institute of Technology" />-->
+				<!--California Institute of Technology-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="Massachusetts Institute of Technology" />-->
+				<!--Massachusetts Institute of Technology-->
+			<!--</label>-->
+		<!--</div>-->
+			<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="Stanford University" />-->
+				<!--Stanford University-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="Princeton University" />-->
+				<!--Princeton University-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="University of Cambridge" />-->
+				<!--University of Cambridge-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="University of Oxford" />-->
+				<!--University of Oxford-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="University of California, Berkeley" />-->
+				<!--University of California, Berkeley-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="Imperial College London" />-->
+				<!--Imperial College London-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="Yale University" />-->
+				<!--Yale University-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="University of California, Los Angeles" />-->
+				<!--University of California, Los Angeles-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="University of Chicago" />-->
+				<!--University of Chicago-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="Johns Hopkins University" />-->
+				<!--Johns Hopkins University-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="Cornell University" />-->
+				<!--Cornell University-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="ETH Zurich – Swiss Federal Institute of Technology Zurich" />-->
+				<!--ETH Zurich – Swiss Federal Institute of Technology Zurich-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="University of Michigan" />-->
+				<!--University of Michigan-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="University of Toronto" />-->
+				<!--University of Toronto-->
+			<!--</label>-->
+		<!--</div>-->
+		<!--<div>-->
+			<!--<label class="labelCheckbox" for="university">-->
+				<!--<input name="university" class="inputCheckbox" type="checkbox" value="Carnegie Mellon University" />-->
+				<!--Carnegie Mellon University-->
+			<!--</label>-->
+		<!--</div>-->
+
+	<!--</div>-->
+
+</div>
+</body>
+
+</html>

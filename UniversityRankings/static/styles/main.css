@@ -1,0 +1,195 @@
+/* ---------------------------------------------------------------------------------------------------- */
+/* RESET CSS */
+
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
+/* ---------------------------------------------------------------------------------------------------- */
+svg {
+  font: 10px sans-serif;
+}
+
+.background path {
+  fill: none;
+  stroke: none;
+  /*stroke-width: 20px;*/
+  pointer-events: stroke;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
+  opacity:0.5;
+}
+
+.foreground path {
+  fill: none;
+  /*stroke: steelblue;*/
+  stroke-width: 1.5px;
+  opacity:0.8;
+}
+
+.axis .title {
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+#selection{
+  display:block;
+  width:20%;
+  padding:10px;
+  margin: auto;
+  font-size: 16px;
+}
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.inactive.tick text{
+   z-index: 100;
+}
+.label {
+  -webkit-transition: fill 125ms linear;
+}
+
+.active .label:not(.inactive) {
+  font-weight: bold;
+
+}
+
+.label.inactive {
+  fill: #ccc;
+}
+
+.foreground path.inactive {
+  stroke: #ccc;
+  stroke-opacity: .5;
+  stroke-width: 1px;
+}
+
+.brush .extent {
+  fill-opacity: .3;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+header{
+  display:block;
+  width:20%;
+  padding:10px;
+  margin: auto;
+  font-size: 18px;
+  font-weight: bold;
+}
+h2{
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#key{
+  display:block;
+  padding:20px;
+}
+
+.cblock{
+  display:inline-block;
+  width:20px;
+  height:20px;
+  background-color: #000;
+  margin-top:5px;
+  margin-left: 15px;
+  margin-right: 5px;
+}
+
+#us{
+  background-color: black;/*#ff7761;*/
+}
+#uk{
+  background-color: #fdc23e;
+}
+#sz{
+  background-color: #a8dba8;
+}
+#ca{
+  background-color: #A593E0;
+}
+#sg{
+  background-color: black;/*purple;*/
+}
+#sw{
+  background-color: olive;
+}
+#gm{
+  background-color: black;
+}
+#jp{
+  background-color: #8F2D56;
+}
+#hk{
+  background-color: yellow;
+}
+#au{
+  background-color: brown;
+}
+#sk{
+  background-color: magenta;
+}
+
+#pc{
+  display:inline-block;
+  width:80%;
+}
+#key{
+  display:inline-block;
+  width:10%;
+  height:503px;
+  vertical-align: super;
+}
