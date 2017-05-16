@@ -5,7 +5,7 @@ Here are some beautiful kaggle links that I found on the go which you can use in
 * Data is from here : https://www.kaggle.com/mylesoneill/world-university-rankings
 * Basic idea is from here :  http://www.kinshuk.co/projects/univiz.html </br>
                              http://www.faygu.com/info-viz/d3
-* D3 correlogram: probably add this to the dashboard in future.
+* D3 correlogram: probably add this to the dashboard in future. This is a visualization of correlation between different attributes.
 * Other interesting python notebooks and visualizations on this or similar dataset
   * [my fav] https://www.kaggle.com/pozdniakov/which-universities-do-good-science
   * https://github.com/arnaudbenard/university-ranking/blob/master/Analysis.ipynb 
