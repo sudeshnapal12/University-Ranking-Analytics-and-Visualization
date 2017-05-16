@@ -1,11 +1,11 @@
 # Visualization---University-Ranking
 Find new insights with Times Higher Education data across the years. Made an interactive dashboard with D3 to get these insights.
 
-Here are some beautiful kaggle links I had found on the go which you can use in future to do further analysis.
+Here are some beautiful kaggle links that I found on the go which you can use in future to do further analysis.
 * Data is from here : https://www.kaggle.com/mylesoneill/world-university-rankings
 * Basic idea is from here :  http://www.kinshuk.co/projects/univiz.html </br>
                              http://www.faygu.com/info-viz/d3
-* D3 correlogram, probably add this to the dashboard in future.
+* D3 correlogram: probably add this to the dashboard in future.
 * Other interesting python notebooks and visualizations on this or similar dataset
   * [my fav] https://www.kaggle.com/pozdniakov/which-universities-do-good-science
   * https://github.com/arnaudbenard/university-ranking/blob/master/Analysis.ipynb 
