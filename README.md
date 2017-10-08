@@ -1,4 +1,4 @@
-# Visualization---University-Ranking
+# University-Ranking Analytics and Visualization
 Find new insights with Times Higher Education data across the years. Made an interactive dashboard with D3 to get these insights.
 
 Here are some beautiful kaggle links that I found on the go which you can use in future to do further analysis.
